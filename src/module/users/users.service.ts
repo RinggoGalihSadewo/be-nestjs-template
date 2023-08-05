@@ -12,6 +12,8 @@ import {
 } from './users.contract';
 import { UsersModel, UsersProperties } from './users.entity';
 import * as bcrypt from 'bcrypt';
+import * as fs from 'fs/promises';
+import { dirUsers } from 'src/config/multer.config';
 
 @Injectable()
 export class UsersService {
@@ -83,13 +85,11 @@ export class UsersService {
     try {
       Logger.log('--POST USERS, USERS SERVICE--');
 
-      const { name, username, email, password } = params;
+      const { password } = params;
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const result = await this.usersRepositories.create({
-        name,
-        username,
-        email,
+        ...params,
         password: hashedPassword,
       });
 
@@ -113,6 +113,20 @@ export class UsersService {
       });
 
       if (result) {
+        if (result.photo && result.photo !== 'default.png') {
+          const filePath = `${dirUsers}/${result.photo}`;
+
+          try {
+            Logger.log(`Delete photo users: ${result.photo}`);
+            await fs.unlink(filePath);
+          } catch (error) {
+            Logger.error(
+              `--DELETE PHOTO USERS: ${result.photo} ERROR, USERS SERVICE--`,
+            );
+            Promise.reject(error);
+          }
+        }
+
         await this.usersRepositories.update(
           {
             ...params,
@@ -150,6 +164,20 @@ export class UsersService {
     try {
       const result = await this.findOne(id);
       if (result) {
+        if (result.photo && result.photo !== 'default.png') {
+          const filePath = `${dirUsers}/${result.photo}`;
+
+          try {
+            Logger.log(`Delete photo users: ${result.photo}`);
+            await fs.unlink(filePath);
+          } catch (error) {
+            Logger.error(
+              `--DELETE PHOTO USERS: ${result.photo} ERROR, USERS SERVICE--`,
+            );
+            Promise.reject(error);
+          }
+        }
+
         await this.usersRepositories.destroy({
           where: { id },
         });

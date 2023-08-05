@@ -24,6 +24,9 @@ export class UsersFindOneRequest {
 export class UsersFindOneResponse {
   readonly id: number;
 
+  @ApiProperty({ example: '1' })
+  readonly role_id: number;
+
   @ApiProperty({ example: 'your_name' })
   readonly name: string;
 
@@ -33,12 +36,22 @@ export class UsersFindOneResponse {
   @ApiProperty({ example: 'your_email@gmail.com' })
   readonly email: string;
 
+  @ApiProperty({ example: '1' })
+  readonly isActive: boolean;
+
+  @ApiProperty({ example: 'default.png' })
+  photo: string;
+
   readonly password: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }
 
 export class UsersCreateRequest {
+  @IsNotEmpty()
+  @ApiProperty({ example: '1' })
+  readonly role_id: number;
+
   @IsNotEmpty()
   @ApiProperty({ example: 'your_name' })
   readonly name: string;
@@ -54,6 +67,12 @@ export class UsersCreateRequest {
   @ApiProperty({ example: 'your_password' })
   @IsNotEmpty()
   readonly password: string;
+
+  @ApiProperty({ example: '1' })
+  readonly isActive: boolean;
+
+  @ApiProperty({ example: 'default.png' })
+  photo: string;
 }
 
 export class UsersCreateResponse extends UsersFindOneResponse {}

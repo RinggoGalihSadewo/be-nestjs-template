@@ -38,6 +38,7 @@ module.exports = {
       photo: {
         type: Sequelize.STRING,
         allowNull: true,
+        defaultValue: 'default.png',
       },
       createdAt: {
         type: Sequelize.DATE,

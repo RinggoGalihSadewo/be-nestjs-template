@@ -8,9 +8,12 @@ import {
   Patch,
   Post,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { multerConfig } from 'src/config/multer.config';
 import { JwtAuthGuard } from '../auth/auth.guard';
 import {
   UsersUpdateRequest,
@@ -25,6 +28,7 @@ import {
   UsersProfileResponse,
 } from './users.contract';
 import { UsersService } from './users.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 @ApiTags('Users')
@@ -85,11 +89,18 @@ export class UsersController {
   @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'POST USERS' })
+  @UseInterceptors(FileInterceptor('file', multerConfig))
   async create(
     @Body() params: UsersCreateRequest,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<UsersCreateResponse> {
     try {
       Logger.log('--START POST USERS, USERS CONTROLLER--');
+
+      if (file) {
+        params.photo = file.filename;
+      }
+
       return await this.usersService.create(params);
     } catch (error) {
       Logger.error('--POST ERROR: USERS CONTROLLER--');
@@ -102,12 +113,19 @@ export class UsersController {
   @ApiBearerAuth()
   @Patch(':id')
   @ApiOperation({ summary: 'UPDATE USERS' })
+  @UseInterceptors(FileInterceptor('file', multerConfig))
   async update(
     @Param('id') id: number,
     @Body() params: UsersUpdateRequest,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<UsersUpdateResponse> {
     try {
       Logger.log('--START UPDATE USERS, USERS CONTROLLER--');
+
+      if (file) {
+        params.photo = file.filename;
+      }
+
       return await this.usersService.update(id, params);
     } catch (error) {
       Logger.error('--UPDATE ERROR: USERS CONTROLLER--');

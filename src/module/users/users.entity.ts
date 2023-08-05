@@ -10,6 +10,7 @@ import {
 
 export type UsersProperties = {
   id: number;
+  role_id: number;
   name: string;
   username: string;
   email: string;
@@ -33,6 +34,11 @@ export class UsersModel extends Model {
   id: number;
 
   @Column
+  @IsInt()
+  @IsNotEmpty()
+  role_id: number;
+
+  @Column
   @IsString()
   name: string;
 
@@ -53,7 +59,9 @@ export class UsersModel extends Model {
   @IsNotEmpty()
   isActive: boolean;
 
-  @Column
+  @Column({
+    defaultValue: 'default.png',
+  })
   photo: string;
 
   @Column({
