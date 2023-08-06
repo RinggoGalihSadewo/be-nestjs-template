@@ -14,6 +14,7 @@ import { UsersModel, UsersProperties } from './users.entity';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs/promises';
 import { dirUsers } from 'src/config/multer.config';
+import { RoleModel } from '../role/role.entity';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +30,7 @@ export class UsersService {
       const results = await this.usersRepositories.findAll({
         order: [['createdAt', 'DESC']],
         attributes: { exclude: ['password'] },
+        include: [RoleModel],
       });
 
       Logger.log(`Results: ${JSON.stringify(results)}`);
@@ -50,6 +52,7 @@ export class UsersService {
       const result = await this.usersRepositories.findOne({
         where: { id },
         attributes: { exclude: ['password'] },
+        include: [RoleModel],
       });
 
       if (result) {
@@ -138,6 +141,7 @@ export class UsersService {
 
         const user = await this.usersRepositories.findOne({
           where: { id },
+          include: [RoleModel],
         });
 
         Logger.log(`Result: ${JSON.stringify(user)}`);
@@ -162,7 +166,10 @@ export class UsersService {
     id: number,
   ): Promise<{ isSuccess: boolean; data: UsersDeleteResponse }> {
     try {
-      const result = await this.findOne(id);
+      const result = await this.usersRepositories.findOne({
+        where: { id },
+        include: [RoleModel],
+      });
       if (result) {
         if (result.photo && result.photo !== 'default.png') {
           const filePath = `${dirUsers}/${result.photo}`;

@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { UsersController } from './module/users/users.controller';
 import { UsersModule } from './module/users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import 'dotenv/config';
 import { AuthModule } from './module/auth/auth.module';
 import { AuthController } from './module/auth/auth.controller';
+import { RoleModule } from './module/role/role.module';
+import 'dotenv/config';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthController } from './module/auth/auth.controller';
     }),
     UsersModule,
     AuthModule,
+    RoleModule,
   ],
   controllers: [UsersController, AuthController],
 })

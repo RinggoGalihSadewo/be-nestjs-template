@@ -1,12 +1,15 @@
 import { IsEmail, IsInt, IsNotEmpty, IsString } from 'class-validator';
 import {
   AutoIncrement,
+  BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { RoleModel } from '../role/role.entity';
 
 export type UsersProperties = {
   id: number;
@@ -33,6 +36,7 @@ export class UsersModel extends Model {
   @IsNotEmpty()
   id: number;
 
+  @ForeignKey(() => RoleModel)
   @Column
   @IsInt()
   @IsNotEmpty()
@@ -77,4 +81,7 @@ export class UsersModel extends Model {
   })
   @IsNotEmpty()
   updatedAt: Date;
+
+  @BelongsTo(() => RoleModel)
+  role: RoleModel;
 }
