@@ -5,7 +5,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from './module/auth/auth.module';
 import { AuthController } from './module/auth/auth.controller';
 import { RoleModule } from './module/role/role.module';
+import { RoleController } from './module/role/role.controller';
+import { PostCategoryModule } from './module/postCategory/postCategory.module';
 import 'dotenv/config';
+import { PostCategoryController } from './module/postCategory/postCategory.controller';
 
 @Module({
   imports: [
@@ -23,7 +26,13 @@ import 'dotenv/config';
     UsersModule,
     AuthModule,
     RoleModule,
+    PostCategoryModule,
   ],
-  controllers: [UsersController, AuthController],
+  controllers: [
+    UsersController,
+    AuthController,
+    RoleController,
+    PostCategoryController,
+  ],
 })
 export class AppModule {}

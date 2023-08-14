@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import 'dotenv/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as packageJSON from '../package.json';
 import { join } from 'path';
+import * as packageJSON from '../package.json';
 import * as express from 'express';
+import 'dotenv/config';
 
 const port = process.env.PORT;
 
@@ -30,6 +30,9 @@ async function bootstrap() {
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
   await app.listen(port);
-  Logger.log(`Listening on http://localhost:${port}`);
+  Logger.log(`Listening on server: http://localhost:${port}`);
+  Logger.log(
+    `Listening on swagger: http://localhost:${port}/${process.env.SWAGGER_DOCS_PATH}`,
+  );
 }
 bootstrap();
