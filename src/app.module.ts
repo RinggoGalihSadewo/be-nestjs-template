@@ -9,6 +9,8 @@ import { RoleController } from './module/role/role.controller';
 import { PostCategoryModule } from './module/postCategory/postCategory.module';
 import 'dotenv/config';
 import { PostCategoryController } from './module/postCategory/postCategory.controller';
+import { PostModule } from './module/post/post.module';
+import { PostController } from './module/post/post.controller';
 
 @Module({
   imports: [
@@ -26,12 +28,14 @@ import { PostCategoryController } from './module/postCategory/postCategory.contr
     UsersModule,
     AuthModule,
     RoleModule,
+    PostModule,
     PostCategoryModule,
   ],
   controllers: [
     UsersController,
     AuthController,
     RoleController,
+    PostController,
     PostCategoryController,
   ],
 })

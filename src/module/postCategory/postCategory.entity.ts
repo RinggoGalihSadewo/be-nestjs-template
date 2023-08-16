@@ -2,10 +2,12 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import {
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { PostModel } from '../post/post.entity';
 
 export type PostCategoryProperties = {
   id: string;
@@ -51,4 +53,7 @@ export class PostCategoryModel extends Model {
   })
   @IsNotEmpty()
   updatedAt: Date;
+
+  @HasMany(() => PostModel)
+  post: PostModel[];
 }

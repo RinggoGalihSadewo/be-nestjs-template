@@ -26,6 +26,7 @@ export class PostCategoryFindOneRequest {
 }
 
 export class PostCategoryFindOneResponse {
+  @IsNotEmpty()
   readonly id: string;
 
   @IsNotEmpty()
@@ -39,6 +40,9 @@ export class PostCategoryFindOneResponse {
   @IsOptional()
   @ApiProperty({ example: 'your_description' })
   readonly description?: string;
+
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 }
 
 export class PostCategoryCreateRequest {
